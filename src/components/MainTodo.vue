@@ -8,6 +8,18 @@
     />
     <button class="btn" @click="addTodo">追加</button>
   </div>
+  <div class="box_list">
+    <div class="todo_list" v-for="todo in todoListRef" :key="todo.id">
+      <div class="todo">
+        <input type="checkbox" class="check" />
+        <label>{{ todo.task }}</label>
+      </div>
+      <div class="btns">
+        <button class="btn green">編</button>
+        <button class="btn pink">削</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -17,7 +29,10 @@ import { ref } from 'vue';
 const todoRef = ref('');
 
 // テキストボックスに入力された内容をリストで格納する用
+// ローカルストレージにtodoListがいればそれを格納し、なければ空配列で初期化
 const todoListRef = ref([]);
+const ls = localStorage.todoList;
+todoListRef.value = ls ? JSON.parse(ls) : [];
 
 const addTodo = () => {
   // idとしてミリ秒を使う
@@ -55,5 +70,44 @@ const addTodo = () => {
   color: #fff;
   text-align: center;
   font-size: 14px;
+}
+
+.box_list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.todo_list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.todo {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  width: 300px;
+}
+
+.check {
+  border: 1px solid red;
+  transform: scale(1.6);
+  margin: 0 16px 2px 6px;
+}
+
+.btns {
+  display: flex;
+  gap: 4px;
+}
+
+.green {
+  background-color: #00c853;
+}
+
+.pink {
+  background-color: #ff4081;
 }
 </style>
